@@ -7,6 +7,7 @@ export default function validateLogin(data: object) {
   });
 
   const { error, value } = schema.validate(data);
+  console.log(error);
   if (error) throw error;
 
   return value;
