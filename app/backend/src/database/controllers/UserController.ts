@@ -1,6 +1,7 @@
 import bcrypt = require('bcryptjs');
 import { Request, Response } from 'express';
 import UserService from '../services/UserService';
+import { createToken } from '../Utils/jwt';
 import validateLogin from '../Utils/validation';
 
 class UserController {
@@ -17,11 +18,11 @@ class UserController {
     const { email, password } = req.body;
     validateLogin({ email, password });
     const user = await UserService.findOne(email);
-    if (!user) res.status(400).json({ message: 'Unauthorized' });
-    if (user) bcrypt.compareSync(password, user.password);
-    console.log(user);
-
-    return res.status(200).json(user);
+    if (!user || !bcrypt.compareSync(password, user.password)) {
+      res.status(400).json({ message: 'Unauthorized' });
+    }
+    const token = createToken(email, password);
+    return res.status(200).json({ token });
   }
 
   //   public async create(req: Request, res: Response) {
