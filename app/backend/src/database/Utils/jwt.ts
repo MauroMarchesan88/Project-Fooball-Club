@@ -13,6 +13,5 @@ export const createToken = (email: string, password: string) => {
 
 export const validateToken = (token: string) => {
   const userData = verify(token, SECRET, options);
-  console.log(userData, 'data');
-  return userData;
+  return userData as { email: string, password: string, iat: number };
 };

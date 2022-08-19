@@ -24,13 +24,12 @@ class UserController {
 
   static async validateLogin(req: Request, res: Response) {
     const { authorization } = req.headers;
-    let user = {};
     if (authorization) {
-      user = validateToken(authorization);
+      const user = validateToken(authorization);
       console.log(user, 'user');
+      const role = await UserService.findOne(user.email);
+      return res.status(200).json(role);
     }
-    const role = await UserService.findOne(user);
-    return res.status(200).json(role);
   }
 }
 
