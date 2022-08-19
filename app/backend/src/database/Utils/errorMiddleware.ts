@@ -18,7 +18,7 @@ const errorMiddleware = (err: Error, _req: Request, res: Response, _next: NextFu
   const { name, message } = err as HttpError;
   const status = errorCode(name);
 
-  res.status(status || 500).json({ message });
+  return res.status(status || 500).json({ message });
 };
 
 export default errorMiddleware;

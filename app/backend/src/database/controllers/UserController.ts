@@ -7,7 +7,6 @@ import validateLogin from '../Utils/validation';
 class UserController {
   static async getAll(_req: Request, res: Response) {
     const user = await UserService.getUsers();
-    console.log('xablau');
     return res.status(200).json(user);
   }
 
@@ -16,8 +15,7 @@ class UserController {
     validateLogin({ email, password });
     const user = await UserService.findOne(email);
     if (!user || !bcrypt.compareSync(password, user.password)) {
-      console.log('verificar');
-      res.status(401).json({ message: 'Incorrect email or password' });
+      return res.status(401).json({ message: 'Incorrect email or password' });
     }
     const token = createToken(email, password);
     return res.status(200).json({ token });

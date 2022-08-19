@@ -2,80 +2,56 @@ import * as sinon from 'sinon';
 import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
-
 import { app } from '../app';
-
-import { Response } from 'superagent';
 import UsersModel from '../database/models/UsersModel';
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
-const usersArray = [
-  {
-    "id": 1,
-    "username": "Admin",
-    "role": "admin",
-    "email": "admin@admin.com",
-    "password": "$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW"
-  },
-  {
-    "id": 2,
-    "username": "User",
-    "role": "user",
-    "email": "user@user.com",
-    "password": "$2a$08$Y8Abi8jXvsXyqm.rmp0B.uQBA5qUz7T6Ghlg/CvVr/gLxYj5UAZVO"
-  }
-];
-
 const validAdmin = { email: 'admin@admin.com', password: 'secret_admin' };
+const adminNoPwd = { email: 'admin@admin.com', password: '' };
+const adminBadPwd = { email: 'admin@admin.com', password: 'secret' };
 
-describe('Endpoint /users', () => {
-  /**
-   * Exemplo do uso de stubs com tipos
-   */
+const token = {
+  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInBhc3N3b3JkIjoic2VjcmV0X2FkbWluIiwiaWF0IjoxNjYwOTM2ODczfQ.bAhsgBprPQcDxkzZc4iJHWZ4jaq0oAaZbTPkzJegj_E",
+}
 
-  // let chaiHttpResponse: Response;
+const user = {
+  "id": 1,
+  "username": "Admin",
+  "role": "admin",
+  "email": "admin@admin.com",
+  "password": "$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW"
+};
 
-  // before(async () => {
-  //   sinon
-  //     .stub(Example, "findOne")
-  //     .resolves({
-  //       ...<Seu mock>
-  //     } as Example);
-  // });
+describe('Endpoint /login', () => {
+  beforeEach(async () => sinon.stub(UsersModel, 'findOne').resolves(user as UsersModel));
 
-  after(()=>{
-    sinon.restore();
-  })
+  afterEach(()=>(UsersModel.findOne as sinon.SinonStub).restore());
 
-  // it('...', async () => {
-  //   chaiHttpResponse = await chai
-  //      .request(app)
-  //      ...
-
-  //   expect(...)
-  // });
-
-  it('Verificar se retorna 200', async () => {
-    sinon.stub(UsersModel, 'findAll').resolves([]);
-
+  it('Verificar se retorna 200 com os dados corretos', async () => {
     const response = await chai.request(app)
-    .get('/users')
+    .post('/login')
+    .send(validAdmin)
     
     expect(response.status).to.equal(200);
-
-    sinon.restore();
-
   });
 
-  it('Verificar se retorna array de users', async () => {
-    sinon.stub(UsersModel, 'findAll').resolves(usersArray);
-
+  it('Verificar se retorna 200 com os dados incorretos', async () => {
     const response = await chai.request(app)
-    .get('/users')
+    .post('/login')
+    .send(adminNoPwd)
     
-    expect(response.body).to.be.deep.equal(usersArray);
+    expect(response.status).to.equal(400);
+  });
+
+  it('Verificar se retorna 200 com os dados incorretos', async () => {
+    const response = await chai.request(app)
+    .post('/login')
+    .send(adminBadPwd)
+    
+    expect(response.status).to.equal(401);
+    expect(response.body).to.be.deep.equal({ message: 'Incorrect email or password' });
   });
 });
