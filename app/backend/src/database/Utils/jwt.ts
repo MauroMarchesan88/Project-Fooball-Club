@@ -13,5 +13,5 @@ export const createToken = (email: string, password: string) => {
 
 export const validateToken = (token: string) => {
   const userData = verify(token, SECRET, options);
-  return userData as { email: string, password: string, role: string };
+  return userData as { email: string, password: string };
 };

@@ -24,8 +24,11 @@ class UserController {
   static async validateLogin(req: Request, res: Response) {
     const { authorization } = req.headers;
     if (authorization) {
-      const user = validateToken(authorization);
-      return res.status(200).json(user.role);
+      const validated = validateToken(authorization);
+      const user = await UserService.findOne(validated.email);
+      if (user) {
+        return res.status(200).json({ role: user.role });
+      }
     }
   }
 }
