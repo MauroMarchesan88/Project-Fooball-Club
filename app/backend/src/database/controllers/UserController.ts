@@ -1,14 +1,10 @@
 import bcrypt = require('bcryptjs');
 import { Request, Response } from 'express';
 import UserService from '../services/UserService';
-import { createToken } from '../Utils/jwt';
+import { createToken, validateToken } from '../Utils/jwt';
 import validateLogin from '../Utils/validation';
 
 class UserController {
-  // constructor() {
-  //   this.service = new UserService();
-  // }
-
   static async getAll(_req: Request, res: Response) {
     const user = await UserService.getUsers();
     return res.status(200).json(user);
@@ -19,16 +15,23 @@ class UserController {
     validateLogin({ email, password });
     const user = await UserService.findOne(email);
     if (!user || !bcrypt.compareSync(password, user.password)) {
-      res.status(400).json({ message: 'Unauthorized' });
+      console.log('verificar');
+      res.status(401).json({ message: 'Incorrect email or password' });
     }
     const token = createToken(email, password);
     return res.status(200).json({ token });
   }
 
-  //   public async create(req: Request, res: Response) {
-  //     const user = await this.service.createUser(req.body);
-  //     return res.status(200).json(user);
-  //   }
+  static async validateLogin(req: Request, res: Response) {
+    const { authorization } = req.headers;
+    let user = {};
+    if (authorization) {
+      user = validateToken(authorization);
+      console.log(user, 'user');
+    }
+    const role = await UserService.findOne(user);
+    return res.status(200).json(role);
+  }
 }
 
 export default UserController;
