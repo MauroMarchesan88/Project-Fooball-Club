@@ -27,9 +27,7 @@ class UserController {
     const { authorization } = req.headers;
     if (authorization) {
       const user = validateToken(authorization);
-      console.log(user, 'user');
-      const role = await UserService.findOne(user.email);
-      return res.status(200).json(role);
+      return res.status(200).json(user.role);
     }
   }
 }
