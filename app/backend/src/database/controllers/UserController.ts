@@ -7,6 +7,7 @@ import validateLogin from '../Utils/validation';
 class UserController {
   static async getAll(_req: Request, res: Response) {
     const user = await UserService.getUsers();
+    console.log('xablau');
     return res.status(200).json(user);
   }
 
