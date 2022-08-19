@@ -26,7 +26,7 @@ const user = {
 };
 
 describe('Endpoint /login', () => {
-  beforeEach(async () => sinon.stub(UsersModel, 'findOne').resolves(user as UsersModel));
+  beforeEach(() => sinon.stub(UsersModel, 'findOne').resolves(user as UsersModel));
 
   afterEach(()=>(UsersModel.findOne as sinon.SinonStub).restore());
 

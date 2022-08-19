@@ -19,7 +19,7 @@ const user: User = {
   };
 
 describe('Endpoint /users', () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     sinon.stub(UsersModel, 'findAll').resolves([user as UsersModel]);
   });
 
