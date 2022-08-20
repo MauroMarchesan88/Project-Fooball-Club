@@ -1,6 +1,8 @@
 import * as express from 'express';
-import routers from './database/routes/UserRouter';
+import UserRouter from './database/routes/UserRouter';
+import TeamsRouter from './database/routes/TeamsRouter';
 import errorMiddleware from './database/Utils/errorMiddleware';
+import MatchesRouter from './database/routes/MatchesRouter';
 
 class App {
   public app: express.Express;
@@ -25,7 +27,10 @@ class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(accessControl);
-    this.app.use(routers);
+    this.app.use(UserRouter);
+    this.app.use(TeamsRouter);
+    this.app.use(MatchesRouter);
+
     this.app.use(errorMiddleware);
   }
 
