@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import MatchesService from '../services/MatchesService';
+import { validateToken } from '../Utils/jwt';
 
 class MatchesController {
   static async getAll(_req: Request, res: Response) {
@@ -7,11 +8,17 @@ class MatchesController {
     return res.status(200).json(teams);
   }
 
-  // static async findByPk(req: Request, res: Response) {
-  //   const { id } = req.params;
-  //   const team = await MatchesService.findByPk(id);
-  //   return res.status(200).json(team);
-  // }
+  static async saveInProgress(req: Request, res: Response) {
+    const { authorization } = req.headers;
+    if (authorization) {
+      validateToken(authorization);
+      const team = await MatchesService.create(req.body);
+
+      if (team) {
+        return res.status(201).json(team);
+      }
+    }
+  }
 }
 
 export default MatchesController;

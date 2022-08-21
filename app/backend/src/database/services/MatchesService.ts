@@ -11,7 +11,21 @@ export default class MatchesService {
     });
   }
 
-  // static async findByPk(id: string) {
-  //   return MatchesModel.findByPk(id);
-  // }
+  static async create(body: {
+    homeTeam: number, awayTeam: number, homeTeamGoals: number, awayTeamGoals: number }) {
+    // const teamHome = await TeamsModel.findByPk(body.homeTeam);
+    // console.log(typeof teamHome?.teamName);
+    // const teamAway = await TeamsModel.findByPk(body.awayTeam);
+    // console.log(teamAway);
+
+    const match = {
+      homeTeam: body.homeTeam,
+      homeTeamGoals: body.homeTeamGoals,
+      awayTeam: body.awayTeam,
+      awayTeamGoals: body.awayTeamGoals,
+      inProgress: true,
+    };
+
+    return MatchesModel.create(match);
+  }
 }
