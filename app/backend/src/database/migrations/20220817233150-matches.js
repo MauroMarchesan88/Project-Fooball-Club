@@ -9,17 +9,25 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      home_team: {
+      homeTeam: {
+        field: 'home_team',
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'teams', key: 'id',
+        },
       },
       home_team_goals: {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      away_team: {
+      awayTeam: {
+        field: 'away_team',
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'teams', key: 'id',
+        },
       },
       away_team_goals: {
         allowNull: false,
@@ -30,23 +38,9 @@ module.exports = {
         type: Sequelize.BOOLEAN
       },
     });
-
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
   },
 
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('matches');
-
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
   }
 };

@@ -13,10 +13,6 @@ const validAdmin = { email: 'admin@admin.com', password: 'secret_admin' };
 const adminNoPwd = { email: 'admin@admin.com', password: '' };
 const adminBadPwd = { email: 'admin@admin.com', password: 'secret' };
 
-const token = {
-  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInBhc3N3b3JkIjoic2VjcmV0X2FkbWluIiwiaWF0IjoxNjYwOTM2ODczfQ.bAhsgBprPQcDxkzZc4iJHWZ4jaq0oAaZbTPkzJegj_E",
-}
-
 const user = {
   "id": 1,
   "username": "Admin",

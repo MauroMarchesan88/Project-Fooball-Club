@@ -15,30 +15,21 @@ module.exports = {
         unique: true
       },
       role: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       password: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       },
     })
   },
-  /**
-   * Add altering commands here.
-   *
-   * Example:
-   * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-   */
 
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('users');
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
   }
 };

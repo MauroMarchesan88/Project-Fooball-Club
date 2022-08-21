@@ -1,58 +1,49 @@
 import { INTEGER, Model, BOOLEAN } from 'sequelize';
 import db from '.';
-// import OtherModel from './OtherModel';
+import TeamsModel from './TeamsModel';
 
-class TeamsModel extends Model {
-  // public <campo>!: <tipo>;
+class MatchesModel extends Model {
   id!: number;
-  teamName!: string;
+  homeTeam!: number;
+  homeTeamGoals!: number;
+  awayTeam!: number;
+  awayTeamGoals!: number;
+  inProgress!: boolean;
 }
 
-TeamsModel.init({
-  // ... Campos
+MatchesModel.init({
   id: {
-    type: INTEGER(),
+    type: INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
   homeTeam: {
-    allowNull: false,
-    type: INTEGER(),
+    type: INTEGER,
   },
   homeTeamGoals: {
-    allowNull: false,
-    type: INTEGER(),
+    type: INTEGER,
   },
   awayTeam: {
-    allowNull: false,
-    type: INTEGER(),
+    type: INTEGER,
   },
   awayTeamGoals: {
-    allowNull: false,
-    type: INTEGER(),
+    type: INTEGER,
   },
   inProgress: {
     type: BOOLEAN,
-    allowNull: false,
   },
 }, {
-  // ... Outras configs
   sequelize: db,
-  modelName: 'TeamsModel',
-  tableName: 'teams',
+  modelName: 'MatchesModel',
+  tableName: 'matches',
   timestamps: false,
   underscored: true,
 });
 
-/**
-  * `Workaround` para aplicar as associations em TS:
-  * Associations 1:N devem ficar em uma das instâncias de modelo
-  * */
+TeamsModel.hasMany(MatchesModel, { foreignKey: 'homeTeam' });
+TeamsModel.hasMany(MatchesModel, { foreignKey: 'awayTeam' });
 
-// OtherModel.belongsTo(Example, { foreignKey: 'campoA', as: 'campoEstrangeiroA' });
-// OtherModel.belongsTo(Example, { foreignKey: 'campoB', as: 'campoEstrangeiroB' });
+MatchesModel.belongsTo(TeamsModel, { foreignKey: 'homeTeam', as: 'teamHome' });
+MatchesModel.belongsTo(TeamsModel, { foreignKey: 'awayTeam', as: 'teamAway' });
 
-// Example.hasMany(OtherModel, { foreignKey: 'campoC', as: 'campoEstrangeiroC' });
-// Example.hasMany(OtherModel, { foreignKey: 'campoD', as: 'campoEstrangeiroD' });
-
-export default TeamsModel;
+export default MatchesModel;
