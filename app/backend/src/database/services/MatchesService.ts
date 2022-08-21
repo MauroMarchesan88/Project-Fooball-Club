@@ -1,5 +1,6 @@
 import MatchesModel from '../models/MatchesModel';
 import TeamsModel from '../models/TeamsModel';
+import TeamsService from './TeamsService';
 
 export default class MatchesService {
   static async getTeams() {
@@ -11,12 +12,14 @@ export default class MatchesService {
     });
   }
 
+  static async verifyTeams(teams: { homeTeam: number, awayTeam: number }) {
+    await TeamsService.findByPk(teams.homeTeam);
+    await TeamsModel.findByPk(teams.awayTeam);
+  }
+
   static async create(body: {
     homeTeam: number, awayTeam: number, homeTeamGoals: number, awayTeamGoals: number }) {
-    // const teamHome = await TeamsModel.findByPk(body.homeTeam);
-    // console.log(typeof teamHome?.teamName);
-    // const teamAway = await TeamsModel.findByPk(body.awayTeam);
-    // console.log(teamAway);
+    await this.verifyTeams({ homeTeam: body.homeTeam, awayTeam: body.awayTeam });
 
     const match = {
       homeTeam: body.homeTeam,
@@ -27,5 +30,17 @@ export default class MatchesService {
     };
 
     return MatchesModel.create(match);
+  }
+
+  static async update(id: string, homeTeamGoals: number, awayTeamGoals: number) {
+    return MatchesModel.update({ homeTeamGoals, awayTeamGoals }, {
+      where: { id },
+    });
+  }
+
+  static async updateFinish(id: string) {
+    return MatchesModel.update({ inProgress: false }, {
+      where: { id },
+    });
   }
 }

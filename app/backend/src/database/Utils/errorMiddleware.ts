@@ -1,24 +1,15 @@
-import { NextFunction, Request, Response } from 'express';
-import HttpError from './httpErrorClass';
+import { ErrorRequestHandler } from 'express';
 
-function errorCode(name: string) {
-  let code = 0;
-  switch (name) {
-    case 'ValidationError':
-      code = 400;
-      break;
-    default:
-      code = 500;
-      break;
+const errorMiddleware: ErrorRequestHandler = async (err, _req, res, next) => {
+  const { status, name, message } = err;
+
+  if (name === 'JsonWebTokenError') {
+    res.status(401).json({ message: 'Token must be a valid token' });
+    return next();
   }
-  return code;
-}
+  res.status(status || 500).json({ message });
 
-const errorMiddleware = (err: Error, _req: Request, res: Response, _next: NextFunction) => {
-  const { name, message } = err as HttpError;
-  const status = errorCode(name);
-
-  return res.status(status || 500).json({ message });
+  next();
 };
 
 export default errorMiddleware;

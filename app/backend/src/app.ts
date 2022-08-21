@@ -27,10 +27,10 @@ class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(accessControl);
+
     this.app.use(UserRouter);
     this.app.use(TeamsRouter);
     this.app.use(MatchesRouter);
-
     this.app.use(errorMiddleware);
   }
 

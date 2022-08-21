@@ -1,5 +1,4 @@
 import UserModel from '../models/UsersModel';
-// import HttpError from '../Utils/httpErrorClass';
 import IUser from '../Interfaces/User.interface';
 
 export default class UserService {
