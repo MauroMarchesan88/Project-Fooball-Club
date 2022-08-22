@@ -4,6 +4,7 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import { app } from '../app';
 import UsersModel from '../database/models/UsersModel';
+import { Response } from 'superagent';
 
 chai.use(chaiHttp);
 
@@ -21,33 +22,45 @@ const user = {
   "password": "$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW"
 };
 
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInBhc3N3b3JkIjoic2VjcmV0X2FkbWluIiwiaWF0IjoxNjYxMTkxNzY3fQ.gF9H1rRAk4I8JNOBe6bSLmBTphk2l0V2vhWyLuJe0SA'
+
 describe('Endpoint /login', () => {
   beforeEach(() => sinon.stub(UsersModel, 'findOne').resolves(user as UsersModel));
 
   afterEach(()=>(UsersModel.findOne as sinon.SinonStub).restore());
 
+  let chaiHttpResponse: Response;
+
   it('Verificar se retorna 200 com os dados corretos', async () => {
-    const response = await chai.request(app)
+    chaiHttpResponse = await chai.request(app)
     .post('/login')
     .send(validAdmin)
     
-    expect(response.status).to.equal(200);
+    expect(chaiHttpResponse.status).to.equal(200);
   });
 
   it('Verificar se retorna 200 com os dados incorretos', async () => {
-    const response = await chai.request(app)
+    chaiHttpResponse = await chai.request(app)
     .post('/login')
     .send(adminNoPwd)
     
-    expect(response.status).to.equal(400);
+    expect(chaiHttpResponse.status).to.equal(400);
   });
 
   it('Verificar se retorna 200 com os dados incorretos', async () => {
-    const response = await chai.request(app)
+    chaiHttpResponse = await chai.request(app)
     .post('/login')
     .send(adminBadPwd)
     
-    expect(response.status).to.equal(401);
-    expect(response.body).to.be.deep.equal({ message: 'Incorrect email or password' });
+    expect(chaiHttpResponse.status).to.equal(401);
+    expect(chaiHttpResponse.body).to.be.deep.equal({ message: 'Incorrect email or password' });
+  });
+
+  it('Verificar se valida login', async () => {
+    chaiHttpResponse = await chai.request(app)
+    .get('/login/validate')
+    .set('authorization', token)
+    
+    expect(chaiHttpResponse.status).to.equal(200);
   });
 });

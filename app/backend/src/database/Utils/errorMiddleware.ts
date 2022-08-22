@@ -2,9 +2,6 @@ import { ErrorRequestHandler } from 'express';
 
 const errorMiddleware: ErrorRequestHandler = async (err, _req, res, next) => {
   const { status, name, message } = err;
-  console.log(name);
-  console.log(status);
-  console.log(message);
 
   if (name === 'JsonWebTokenError') {
     res.status(401).json({ message: 'Token must be a valid token' });

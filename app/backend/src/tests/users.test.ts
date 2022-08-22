@@ -5,6 +5,7 @@ import chaiHttp = require('chai-http');
 import { app } from '../app';
 import UsersModel from '../database/models/UsersModel';
 import User from '../database/Interfaces/User.interface';
+import { Response } from 'superagent';
 
 chai.use(chaiHttp);
 
@@ -20,26 +21,30 @@ const user: User = {
 
 describe('Endpoint /users', () => {
   beforeEach(() => {
-    sinon.stub(UsersModel, 'findAll').resolves([user as UsersModel]);
+    sinon.restore();
   });
 
   afterEach(()=>{
     sinon.restore();
   })
 
+  let chaiHttpResponse: Response;
+
   it('Verificar se retorna 200', async () => {
-    const response = await chai.request(app)
+    sinon.stub(UsersModel, 'findAll').resolves([user as UsersModel]);
+    chaiHttpResponse = await chai.request(app)
     .get('/users')
     
-    expect(response.status).to.equal(200);
+    expect(chaiHttpResponse.status).to.equal(200);
 
     sinon.restore();
   });
 
   it('Verificar se retorna user', async () => {
-    const response = await chai.request(app)
+    sinon.stub(UsersModel, 'findAll').resolves([user as UsersModel]);
+    chaiHttpResponse = await chai.request(app)
     .get('/users')
     
-    expect(response.body).to.be.deep.equal([user]);
+    expect(chaiHttpResponse.body).to.be.deep.equal([user]);
   });
 });
