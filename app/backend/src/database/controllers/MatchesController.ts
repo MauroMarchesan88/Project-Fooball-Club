@@ -27,12 +27,6 @@ class MatchesController {
     }
   }
 
-  // static async getInProgress(_req: Request, res: Response) {
-  //   const {q} = req.params
-  //   const teams = await MatchesService.getTeams();
-  //   return res.status(200).json(teams);
-  // }
-
   static async update(req: Request, res: Response) {
     const { id } = req.params;
     const { homeTeamGoals, awayTeamGoals } = req.body;

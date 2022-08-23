@@ -58,7 +58,7 @@ function awayGoals(allMatches: MatchesModel[]) {
   return result;
 }
 
-export default class UserService {
+export default class LeaderboardService {
   static async getAllHome() {
     const allTeams = await TeamsModel.findAll({ attributes: { exclude: ['teamName'] } });
     const leaderboard = await Promise.all(allTeams.map(async (team) => {
@@ -66,6 +66,7 @@ export default class UserService {
         include: [
           { model: TeamsModel, as: 'teamHome' }],
         where: { inProgress: false, homeTeam: team.id } });
+      console.log(allMatches);
       const scores = addScores(allMatches);
       const goals = addGoals(allMatches);
       const efficiency = ((scores.totalPoints / (scores.totalGames * 3)) * 100).toFixed(2);
