@@ -30,6 +30,25 @@ function addGoals(allMatches: MatchesModel[]) {
   return result;
 }
 
+function megaZort(leaderboard: TeamScore[]) {
+  leaderboard.sort((a, b) => {
+    if (Number(a.totalPoints) > Number(b.totalPoints)) return -1;
+    if (Number(a.totalPoints) < Number(b.totalPoints)) return 1;
+    return 0;
+  });
+  leaderboard.sort((a, b) => {
+    if (Number(a.totalVictories) > Number(b.totalVictories)) return -1;
+    if (Number(a.totalVictories) < Number(b.totalVictories)) return 1;
+    return 0;
+  });
+  leaderboard.sort((a, b) => {
+    if (Number(a.goalsBalance) > Number(b.goalsBalance)) return -1;
+    if (Number(a.goalsBalance) < Number(b.goalsBalance)) return 1;
+    return 0;
+  });
+  return leaderboard;
+}
+
 export default class UserService {
   static async getAllHome() {
     const allTeams = await TeamsModel.findAll({ attributes: { exclude: ['teamName'] } });
@@ -44,6 +63,7 @@ export default class UserService {
       const teamScore = { name: allMatches[0].teamHome?.teamName, ...scores, ...goals, efficiency };
       return teamScore;
     }));
-    return leaderboard;
+    const leaderboardSorted = megaZort(leaderboard);
+    return leaderboardSorted;
   }
 }
