@@ -6,6 +6,11 @@ class LeaderboardController {
     const teams = await LeaderboardService.getAllHome();
     return res.status(200).json(teams);
   }
+
+  static async getAllaway(_req: Request, res: Response) {
+    const teams = await LeaderboardService.getAllAway();
+    return res.status(200).json(teams);
+  }
 }
 
 export default LeaderboardController;

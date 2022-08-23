@@ -7,5 +7,7 @@ const routers: Router = Router();
 
 routers.get('/leaderboard/home', (req: Request, res: Response) =>
   LeaderboardController.getAllHome(req, res));
+routers.get('/leaderboard/away', (req: Request, res: Response) =>
+  LeaderboardController.getAllaway(req, res));
 
 export default routers;
