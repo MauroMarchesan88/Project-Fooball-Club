@@ -1,13 +1,15 @@
 # 🚧 README em construção 🚧
 
-<!-- Olá, Tryber!
+Football leaderboard CRUD with Login authorization
 
-Esse é apenas um arquivo inicial para o README do seu projeto.
+(use user@user.com and secret_user as password to login)
 
-É essencial que você preencha esse documento por conta própria, ok?
+In this project i had to develop the backend, tests with Chai and Sinon and Dockerfiles for both apps, front and back.
 
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
+![image](https://user-images.githubusercontent.com/88411438/186767916-9b3916cd-67f9-4165-aec2-5e8e9f7ecd04.png)
 
+
+<!-- 
 ⚠️ IMPORTANTE: você precisa deixar nítido:
 - quais arquivos/pastas foram desenvolvidos por você; 
 - quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
