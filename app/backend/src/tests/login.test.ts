@@ -39,7 +39,7 @@ describe('Endpoint /login', () => {
     expect(chaiHttpResponse.status).to.equal(200);
   });
 
-  it('Verificar se retorna 200 com os dados incorretos', async () => {
+  it('Verificar se retorna 400 com os dados incorretos', async () => {
     chaiHttpResponse = await chai.request(app)
     .post('/login')
     .send(adminNoPwd)

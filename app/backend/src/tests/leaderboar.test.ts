@@ -14,9 +14,6 @@ const { expect } = chai;
 
 const teamsResolve = [{id:1},{id:2},{id:3},{id:4},{id:5},{id:6},{id:7},{id:8},{id:9},{id:10},{id:11},{id:12},{id:13},{id:14},{id:15},{id:16}];
 
-
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInBhc3N3b3JkIjoic2VjcmV0X2FkbWluIiwiaWF0IjoxNjYxMTkxNzY3fQ.gF9H1rRAk4I8JNOBe6bSLmBTphk2l0V2vhWyLuJe0SA'
-
 describe('Endpoint /leaderboard', () => {
   beforeEach(() => sinon.restore());
 
